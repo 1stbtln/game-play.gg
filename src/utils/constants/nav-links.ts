@@ -1,61 +1,78 @@
-import { HelpCircleIcon, LineChartIcon, Link2Icon, LockIcon, NewspaperIcon, QrCodeIcon } from "lucide-react";
+import {
+    ActivityIcon,
+    BookOpenIcon,
+    CircleHelpIcon,
+    FilmIcon,
+    KeyboardIcon,
+    NewspaperIcon,
+    SparklesIcon,
+    VideoIcon,
+} from "lucide-react";
 
 export const NAV_LINKS = [
     {
         title: "Features",
-        href: "/features",
+        href: "/#features",
         menu: [
             {
-                title: "Link Shortening",
-                tagline: "Shorten links and track their performance.",
-                href: "/features/link-shortening",
-                icon: Link2Icon,
+                title: "Live Preview & Recording",
+                tagline: "System status, controls, and recent activity.",
+                href: "/#features",
+                icon: VideoIcon,
             },
             {
-                title: "Password Protection",
-                tagline: "Secure your links with a password.",
-                href: "/features/password-protection",
-                icon: LockIcon,
+                title: "Montages",
+                tagline: "Generated highlight reels ready for review and export.",
+                href: "/#features",
+                icon: SparklesIcon,
             },
             {
-                title: "Advanced Analytics",
-                tagline: "Gain insights into who is clicking your links.",
-                href: "/features/analytics",
-                icon: LineChartIcon,
+                title: "Raw Recordings",
+                tagline: "Full session captures before analysis and montage generation.",
+                href: "/#features",
+                icon: FilmIcon,
             },
             {
-                title: "Custom QR Codes",
-                tagline: "Use QR codes to reach your audience.",
-                href: "/features/qr-codes",
-                icon: QrCodeIcon,
+                title: "State Log",
+                tagline: "Live state and confidence stream. See what the engine sees.",
+                href: "/#features",
+                icon: ActivityIcon,
+            },
+            {
+                title: "Settings & Keybinds",
+                tagline: "Target monitor, game selection, Music Search for montage audio.",
+                href: "/#features",
+                icon: KeyboardIcon,
             },
         ],
     },
     {
         title: "Pricing",
-        href: "/pricing",
-    },
-    {
-        title: "Enterprise",
-        href: "/enterprise",
+        href: "/#pricing",
     },
     {
         title: "Resources",
         href: "/resources",
         menu: [
             {
+                title: "Documentation",
+                tagline: "Guides and reference for GamePlay.",
+                href: "/resources/documentation",
+                icon: BookOpenIcon,
+            },
+            {
+                title: "Support",
+                tagline: "Get help and answers.",
+                href: "/resources/help",
+                icon: CircleHelpIcon,
+            },
+            {
                 title: "Blog",
-                tagline: "Read articles on the latest trends in tech.",
+                tagline: "Tips for streamers and content creators.",
                 href: "/resources/blog",
                 icon: NewspaperIcon,
             },
-            {
-                title: "Help",
-                tagline: "Get answers to your questions.",
-                href: "/resources/help",
-                icon: HelpCircleIcon,
-            },
-        ]
+        ],
     },
     {
         title: "Changelog",

@@ -11,7 +11,7 @@ const NotFound = () => {
             <div className="flex flex-col items-center justify-center mx-auto h-screen">
 
                 <div className="flex items-center justify-center h-full flex-col">
-                    <span className="text-sm font-medium px-3.5 py-1 rounded-md bg-gradient-to-br from-violet-400 to-purple-600 text-neutral-50 not-found">
+                    <span className="text-sm font-medium px-3.5 py-1 rounded-md bg-gradient-to-br from-[rgba(96,165,250,0.18)] to-[rgba(52,211,153,0.18)] text-neutral-50 not-found">
                         404
                     </span>
                     <h1 className="text-3xl md:text-5xl font-bold text-neutral-50 mt-5">

@@ -11,18 +11,15 @@ import {
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn, NAV_LINKS } from "@/utils";
-import { useClerk } from "@clerk/nextjs";
 import { LucideIcon, ZapIcon } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from 'react';
+import Logo from "@/components/ui/logo";
 import MaxWidthWrapper from "../global/max-width-wrapper";
 import MobileNavbar from "./mobile-navbar";
 import AnimationContainer from "../global/animation-container";
 
 const Navbar = () => {
-
-    const { user } = useClerk();
-
     const [scroll, setScroll] = useState(false);
 
     const handleScroll = () => {
@@ -48,9 +45,10 @@ const Navbar = () => {
             <AnimationContainer reverse delay={0.1} className="size-full">
                 <MaxWidthWrapper className="flex items-center justify-between">
                     <div className="flex items-center space-x-12">
-                        <Link href="/#home">
+                        <Link href="/#home" className="flex items-center gap-2">
+                            <Logo className="h-8 w-8" />
                             <span className="text-lg font-bold font-heading !leading-none">
-                                Linkify
+                                GamePlay
                             </span>
                         </Link>
 
@@ -71,14 +69,14 @@ const Navbar = () => {
                                                                 <div className="absolute inset-0 !z-10 h-full w-[calc(100%-10px)] bg-[linear-gradient(to_right,rgb(38,38,38,0.5)_1px,transparent_1px),linear-gradient(to_bottom,rgb(38,38,38,0.5)_1px,transparent_1px)] bg-[size:1rem_1rem]"></div>
                                                                 <NavigationMenuLink asChild className="z-20 relative">
                                                                     <Link
-                                                                        href="/"
+                                                                        href="/#features"
                                                                         className="flex h-full w-full select-none flex-col justify-end rounded-lg bg-gradient-to-b from-muted/50 to-muted p-4 no-underline outline-none focus:shadow-md"
                                                                     >
                                                                         <h6 className="mb-2 mt-4 text-lg font-medium">
                                                                             All Features
                                                                         </h6>
                                                                         <p className="text-sm leading-tight text-muted-foreground">
-                                                                            Manage links, track performance, and more.
+                                                                            Live preview, raw recordings, montages, state log.
                                                                         </p>
                                                                     </Link>
                                                                 </NavigationMenuLink>
@@ -111,24 +109,17 @@ const Navbar = () => {
 
                     </div>
 
-                    <div className="hidden lg:flex items-center">
-                        {user ? (
-                            <div className="flex items-center">
-                                <Link href="/dashboard" className={buttonVariants({ size: "sm", })}>
-                                    Dashboard
-                                </Link>
-                            </div>
-                        ) : (
-                            <div className="flex items-center gap-x-4">
-                                <Link href="/auth/sign-in" className={buttonVariants({ size: "sm", variant: "ghost" })}>
-                                    Sign In
-                                </Link>
-                                <Link href="/auth/sign-up" className={buttonVariants({ size: "sm", })}>
-                                    Get Started
-                                    <ZapIcon className="size-3.5 ml-1.5 text-orange-500 fill-orange-500" />
-                                </Link>
-                            </div>
-                        )}
+                    <div className="hidden lg:flex items-center gap-x-4">
+                        <Link href="/dashboard" className={buttonVariants({ size: "sm", variant: "outline" })}>
+                            Dashboard
+                        </Link>
+                        <Link href="/auth/sign-in" className={buttonVariants({ size: "sm", variant: "ghost" })}>
+                            Sign In
+                        </Link>
+                        <Link href="/auth/sign-up" className={buttonVariants({ size: "sm", })}>
+                            Get Started
+                            <ZapIcon className="size-3.5 ml-1.5 text-orange-500 fill-orange-500" />
+                        </Link>
                     </div>
 
                     <MobileNavbar />

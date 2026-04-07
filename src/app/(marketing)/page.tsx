@@ -1,4 +1,6 @@
 import { AnimationContainer, MaxWidthWrapper, PricingCards } from "@/components";
+import { AppWorkflowBeam } from "@/components/ui/app-workflow-beam";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { BentoCard, BentoGrid, CARDS } from "@/components/ui/bento-grid";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { Button } from "@/components/ui/button";
@@ -6,17 +8,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { LampContainer } from "@/components/ui/lamp";
 import MagicBadge from "@/components/ui/magic-badge";
 import MagicCard from "@/components/ui/magic-card";
-import { COMPANIES, PROCESS } from "@/utils";
 import { REVIEWS } from "@/utils/constants/misc";
-import { currentUser } from "@clerk/nextjs/server";
 import { ArrowRightIcon, CreditCardIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const HomePage = async () => {
-
-    const user = await currentUser();
-
     return (
         <div className="overflow-x-hidden scrollbar-hide size-full">
             {/* Hero Section */}
@@ -30,27 +27,30 @@ const HomePage = async () => {
                             <span className="backdrop absolute inset-[1px] rounded-full bg-neutral-950 transition-colors duration-200 group-hover:bg-neutral-900" />
                             <span className="h-full w-full blur-md absolute bottom-0 inset-x-0 bg-gradient-to-tr from-primary/20"></span>
                             <span className="z-10 py-0.5 text-sm text-neutral-100 flex items-center justify-center gap-1">
-                                ✨ Manage links smarter
+                                Windows desktop app
                                 <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
                             </span>
                         </button>
                         <h1 className="text-foreground text-center py-6 text-5xl font-medium tracking-normal text-balance sm:text-6xl md:text-7xl lg:text-8xl !leading-[1.15] w-full font-heading">
-                            Smart Links with <span className="text-transparent bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text inline-bloc">
-                                Precision
+                            Record. Clip. <span className="text-transparent bg-gradient-to-r from-[rgba(96,165,250,0.9)] to-[rgba(52,211,153,0.9)] bg-clip-text inline-bloc">
+                                Share.
                             </span>
                         </h1>
                         <p className="mb-12 text-lg tracking-tight text-muted-foreground md:text-xl text-balance">
-                            Effortlessly streamline your link management with Linkify.
+                            GamePlay records your gameplay and creates highlight montages automatically.
                             <br className="hidden md:block" />
-                            <span className="hidden md:block">Shorten, track, and organize all your links in one place.</span>
+                            <span className="hidden md:block">One app for capture, clips, and sharing. Built for Windows.</span>
                         </p>
-                        <div className="flex items-center justify-center whitespace-nowrap gap-4 z-50">
+                        <div className="flex flex-col items-center gap-3 z-50">
                             <Button asChild>
-                                <Link href={user ? "/dashboard" : "/auth/sign-in"} className="flex items-center">
-                                    Start creating for free
+                                <Link href="/dashboard" className="flex items-center">
+                                    Try it for free
                                     <ArrowRightIcon className="w-4 h-4 ml-2" />
                                 </Link>
                             </Button>
+                            <p className="text-xs text-muted-foreground font-medium tracking-wide">
+                                Lightweight • Local storage • No cloud required
+                            </p>
                         </div>
                     </AnimationContainer>
 
@@ -63,8 +63,8 @@ const HomePage = async () => {
                                 delay={9}
                             />
                             <Image
-                                src="/assets/dashboard-dark.svg"
-                                alt="Dashboard"
+                                src="/assets/Screenshot 2026-03-11 153203.png"
+                                alt="GamePlay desktop app — recording and montages"
                                 width={1200}
                                 height={1200}
                                 quality={100}
@@ -77,96 +77,127 @@ const HomePage = async () => {
                 </div>
             </MaxWidthWrapper >
 
-            {/* Companies Section */}
-            <MaxWidthWrapper>
-                <AnimationContainer delay={0.4}>
-                    <div className="py-14">
-                        <div className="mx-auto px-4 md:px-8">
-                            <h2 className="text-center text-sm font-medium font-heading text-neutral-400 uppercase">
-                                Trusted by the best in the industry
-                            </h2>
-                            <div className="mt-8">
-                                <ul className="flex flex-wrap items-center gap-x-6 gap-y-6 md:gap-x-16 justify-center">
-                                    {COMPANIES.map((company) => (
-                                        <li key={company.name}>
-                                            <Image
-                                                src={company.logo}
-                                                alt={company.name}
-                                                width={80}
-                                                height={80}
-                                                quality={100}
-                                                className="w-28 h-auto"
-                                            />
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </AnimationContainer>
-            </MaxWidthWrapper>
-
-            {/* Features Section */}
-            <MaxWidthWrapper className="pt-10">
-                <AnimationContainer delay={0.1}>
-                    <div className="flex flex-col w-full items-center lg:items-center justify-center py-8">
-                        <MagicBadge title="Features" />
-                        <h2 className="text-center lg:text-center text-3xl md:text-5xl !leading-[1.1] font-medium font-heading text-foreground mt-6">
-                            Manage Links Like a Pro
-                        </h2>
-                        <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
-                            Linkify is a powerful link management tool that helps you shorten, track, and organize all your links in one place.
-                        </p>
-                    </div>
-                </AnimationContainer>
-                <AnimationContainer delay={0.2}>
-                    <BentoGrid className="py-8">
-                        {CARDS.map((feature, idx) => (
-                            <BentoCard key={idx} {...feature} />
-                        ))}
-                    </BentoGrid>
-                </AnimationContainer>
-            </MaxWidthWrapper>
-
             {/* Process Section */}
             <MaxWidthWrapper className="py-10">
                 <AnimationContainer delay={0.1}>
                     <div className="flex flex-col items-center lg:items-center justify-center w-full py-8 max-w-xl mx-auto">
                         <MagicBadge title="The Process" />
                         <h2 className="text-center lg:text-center text-3xl md:text-5xl !leading-[1.1] font-medium font-heading text-foreground mt-6">
-                            Effortless link management in 3 steps
+                            What happens after you press start
                         </h2>
                         <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
-                            Follow these simple steps to optimize, organize, and share your links with ease.
+                            GamePlay runs this flow automatically in the background so your full session becomes clean clips and a ready-to-share highlight reel.
                         </p>
                     </div>
                 </AnimationContainer>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full py-8 gap-4 md:gap-8">
-                    {PROCESS.map((process, id) => (
-                        <AnimationContainer delay={0.2 * id} key={id}>
-                            <MagicCard className="group md:py-8">
-                                <div className="flex flex-col items-start justify-center w-full">
-                                    <process.icon strokeWidth={1.5} className="w-10 h-10 text-foreground" />
-                                    <div className="flex flex-col relative items-start">
-                                        <span className="absolute -top-6 right-0 border-2 border-border text-foreground font-medium text-2xl rounded-full w-12 h-12 flex items-center justify-center pt-0.5">
-                                            {id + 1}
-                                        </span>
-                                        <h3 className="text-base mt-6 font-medium text-foreground">
-                                            {process.title}
-                                        </h3>
-                                        <p className="mt-2 text-sm text-muted-foreground">
-                                            {process.description}
+                <AnimationContainer delay={0.2}>
+                    <div className="py-8">
+                        <AppWorkflowBeam />
+                    </div>
+                </AnimationContainer>
+                <AnimationContainer delay={0.25}>
+                    <p className="text-center text-sm text-muted-foreground max-w-3xl mx-auto pb-6">
+                        The state engine drives the session: it branches to recording and highlight inference in parallel, each path loops back for the next transition, then the
+                        engine hands off to montage export when you are ready for a finished montage.
+                    </p>
+                </AnimationContainer>
+                <AnimationContainer delay={0.3}>
+                    <MagicCard className="w-full max-w-none">
+                        <div className="p-6 md:p-7">
+                            <Accordion type="single" collapsible defaultValue="step-1" className="w-full">
+                                <AccordionItem value="step-1">
+                                    <AccordionTrigger className="text-left text-foreground">1) Turn it on</AccordionTrigger>
+                                    <AccordionContent>
+                                        <p className="text-sm font-medium text-foreground">You do: Press Start.</p>
+                                        <p className="mt-3 text-sm text-muted-foreground">
+                                            Electron creates a new session and bootstraps the local state engine service on <span className="text-foreground">127.0.0.1:8000</span>.
+                                            Health checks and session controls run over HTTP, while live state is streamed over <span className="text-foreground">/ws</span>.
                                         </p>
-                                    </div>
-                                </div>
-                            </MagicCard>
-                        </AnimationContainer>
-                    ))}
-                </div>
+                                        <ul className="mt-3 space-y-1 text-xs text-muted-foreground list-disc pl-5">
+                                            <li>Desktop shell handles UI, shortcuts, settings, and file orchestration.</li>
+                                            <li>Python service handles CV inference and state event generation.</li>
+                                            <li>Local-first runtime keeps core flow private and offline-friendly.</li>
+                                        </ul>
+                                        <p className="mt-3 text-xs text-muted-foreground">Result: Session is live.</p>
+                                    </AccordionContent>
+                                </AccordionItem>
+
+                                <AccordionItem value="step-2">
+                                    <AccordionTrigger className="text-left text-foreground">2) State engine runs continuously</AccordionTrigger>
+                                    <AccordionContent>
+                                        <p className="text-sm font-medium text-foreground">GamePlay does: Detect and confirm state transitions.</p>
+                                        <p className="mt-3 text-sm text-muted-foreground">
+                                            The engine captures a configured monitor region, preprocesses frames, runs YOLO classification, and applies a stability gate
+                                            (confidence + consecutive frames) so noisy flips do not trigger false transitions.
+                                        </p>
+                                        <ul className="mt-3 space-y-1 text-xs text-muted-foreground list-disc pl-5">
+                                            <li>Capture fallback path: <span className="text-foreground">dxcam -&gt; mss</span> for better reliability on Windows systems.</li>
+                                            <li>Emits <span className="text-foreground">state_update</span>, <span className="text-foreground">state_transition</span>, perf metrics, and optional preview JPEG frames.</li>
+                                            <li>Uses bounded queues/backpressure patterns to keep UI responsiveness stable.</li>
+                                        </ul>
+                                        <p className="mt-3 text-xs text-muted-foreground">Result: Reliable live state.</p>
+                                    </AccordionContent>
+                                </AccordionItem>
+
+                                <AccordionItem value="step-3">
+                                    <AccordionTrigger className="text-left text-foreground">3) Recording starts and stops automatically</AccordionTrigger>
+                                    <AccordionContent>
+                                        <p className="text-sm font-medium text-foreground">GamePlay does: Start/stop recording at the right moments.</p>
+                                        <p className="mt-3 text-sm text-muted-foreground">
+                                            Recording automation listens for stable transitions. On <span className="text-foreground">inactive -&gt; active</span> it starts FFmpeg;
+                                            on <span className="text-foreground">active -&gt; inactive</span> it finalizes, validates with ffprobe, and returns to the state loop.
+                                        </p>
+                                        <ul className="mt-3 space-y-1 text-xs text-muted-foreground list-disc pl-5">
+                                            <li>Writes per-match metadata such as <span className="text-foreground">match.json</span>.</li>
+                                            <li>Stores artifacts under user-data recording session/match folders.</li>
+                                            <li>Updates the recordings list in the desktop UI automatically.</li>
+                                        </ul>
+                                        <p className="mt-3 text-xs text-muted-foreground">Result: Clean match clips.</p>
+                                    </AccordionContent>
+                                </AccordionItem>
+
+                                <AccordionItem value="step-4">
+                                    <AccordionTrigger className="text-left text-foreground">4) Highlight inference scores each moment</AccordionTrigger>
+                                    <AccordionContent>
+                                        <p className="text-sm font-medium text-foreground">GamePlay does: Rank the best plays.</p>
+                                        <p className="mt-3 text-sm text-muted-foreground">
+                                            Inference reads cached highlight scores when possible. If missing, it samples frames and runs ONNX scoring to build ranked highlight
+                                            segments while the state loop continues driving capture and transitions.
+                                        </p>
+                                        <ul className="mt-3 space-y-1 text-xs text-muted-foreground list-disc pl-5">
+                                            <li>Fallback chain: <span className="text-foreground">Python inference -&gt; Node fallback -&gt; in-process fallback</span>.</li>
+                                            <li>Keeps processing resilient if one runtime path is unavailable.</li>
+                                            <li>Produces ranked segments used by montage composition.</li>
+                                        </ul>
+                                        <p className="mt-3 text-xs text-muted-foreground">Result: Ranked highlight segments.</p>
+                                    </AccordionContent>
+                                </AccordionItem>
+
+                                <AccordionItem value="step-5">
+                                    <AccordionTrigger className="text-left text-foreground">5) Montage export packages everything</AccordionTrigger>
+                                    <AccordionContent>
+                                        <p className="text-sm font-medium text-foreground">You get: One shareable highlight reel.</p>
+                                        <p className="mt-3 text-sm text-muted-foreground">
+                                            After recording and inference complete their loop through the state engine, top-ranked segments are concatenated into a final montage
+                                            MP4 and written with export metadata for review, re-export, or immediate sharing.
+                                        </p>
+                                        <ul className="mt-3 space-y-1 text-xs text-muted-foreground list-disc pl-5">
+                                            <li>Output includes montage media and <span className="text-foreground">montage_meta.json</span>.</li>
+                                            <li>Flow is local-first: no cloud backend required for the core pipeline.</li>
+                                            <li>Designed to scale to additional games/presets without changing the architecture.</li>
+                                        </ul>
+                                        <p className="mt-3 text-xs text-muted-foreground">Result: Montage ready to post.</p>
+                                    </AccordionContent>
+                                </AccordionItem>
+                            </Accordion>
+                        </div>
+                    </MagicCard>
+                </AnimationContainer>
             </MaxWidthWrapper>
 
             {/* Pricing Section */}
             <MaxWidthWrapper className="py-10">
+                <div id="pricing" className="scroll-mt-20" />
                 <AnimationContainer delay={0.1}>
                     <div className="flex flex-col items-center lg:items-center justify-center w-full py-8 max-w-xl mx-auto">
                         <MagicBadge title="Simple Pricing" />
@@ -174,7 +205,7 @@ const HomePage = async () => {
                             Choose a plan that works for you
                         </h2>
                         <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
-                            Get started with Linkify today and enjoy more features with our pro plans.
+                            Download free to start recording. Upgrade to Pro for auto montages and priority support.
                         </p>
                     </div>
                 </AnimationContainer>
@@ -182,134 +213,37 @@ const HomePage = async () => {
                     <PricingCards />
                 </AnimationContainer>
                 <AnimationContainer delay={0.3}>
-                    <div className="flex flex-wrap items-start md:items-center justify-center lg:justify-evenly gap-6 mt-12 max-w-5xl mx-auto w-full">
+                        <div className="flex flex-wrap items-start md:items-center justify-center lg:justify-evenly gap-6 mt-12 max-w-5xl mx-auto w-full">
                         <div className="flex items-center gap-2">
                             <CreditCardIcon className="w-5 h-5 text-foreground" />
                             <span className="text-muted-foreground">
-                                No credit card required
+                                Free to download • No credit card required for Free plan
                             </span>
                         </div>
                     </div>
                 </AnimationContainer>
             </MaxWidthWrapper>
 
-            {/* Reviews Section */}
-            <MaxWidthWrapper className="py-10">
-                <AnimationContainer delay={0.1}>
-                    <div className="flex flex-col items-center lg:items-center justify-center w-full py-8 max-w-xl mx-auto">
-                        <MagicBadge title="Our Customers" />
-                        <h2 className="text-center lg:text-center text-3xl md:text-5xl !leading-[1.1] font-medium font-heading text-foreground mt-6">
-                            What our users are saying
-                        </h2>
-                        <p className="mt-4 text-center lg:text-center text-lg text-muted-foreground max-w-lg">
-                            Here&apos;s what some of our users have to say about Linkify.
-                        </p>
-                    </div>
-                </AnimationContainer>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-start gap-4 md:gap-8 py-10">
-                    <div className="flex flex-col items-start h-min gap-6">
-                        {REVIEWS.slice(0, 3).map((review, index) => (
-                            <AnimationContainer delay={0.2 * index} key={index}>
-                                <MagicCard key={index} className="md:p-0">
-                                    <Card className="flex flex-col w-full border-none h-min">
-                                        <CardHeader className="space-y-0">
-                                            <CardTitle className="text-lg font-medium text-muted-foreground">
-                                                {review.name}
-                                            </CardTitle>
-                                            <CardDescription>
-                                                {review.username}
-                                            </CardDescription>
-                                        </CardHeader>
-                                        <CardContent className="space-y-4 pb-4">
-                                            <p className="text-muted-foreground">
-                                                {review.review}
-                                            </p>
-                                        </CardContent>
-                                        <CardFooter className="w-full space-x-1 mt-auto">
-                                            {Array.from({ length: review.rating }, (_, i) => (
-                                                <StarIcon key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                                            ))}
-                                        </CardFooter>
-                                    </Card>
-                                </MagicCard>
-                            </AnimationContainer>
-                        ))}
-                    </div>
-                    <div className="flex flex-col items-start h-min gap-6">
-                        {REVIEWS.slice(3, 6).map((review, index) => (
-                            <AnimationContainer delay={0.2 * index} key={index}>
-                                <MagicCard key={index} className="md:p-0">
-                                    <Card className="flex flex-col w-full border-none h-min">
-                                        <CardHeader className="space-y-0">
-                                            <CardTitle className="text-lg font-medium text-muted-foreground">
-                                                {review.name}
-                                            </CardTitle>
-                                            <CardDescription>
-                                                {review.username}
-                                            </CardDescription>
-                                        </CardHeader>
-                                        <CardContent className="space-y-4 pb-4">
-                                            <p className="text-muted-foreground">
-                                                {review.review}
-                                            </p>
-                                        </CardContent>
-                                        <CardFooter className="w-full space-x-1 mt-auto">
-                                            {Array.from({ length: review.rating }, (_, i) => (
-                                                <StarIcon key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                                            ))}
-                                        </CardFooter>
-                                    </Card>
-                                </MagicCard>
-                            </AnimationContainer>
-                        ))}
-                    </div>
-                    <div className="flex flex-col items-start h-min gap-6">
-                        {REVIEWS.slice(6, 9).map((review, index) => (
-                            <AnimationContainer delay={0.2 * index} key={index}>
-                                <MagicCard key={index} className="md:p-0">
-                                    <Card className="flex flex-col w-full border-none h-min">
-                                        <CardHeader className="space-y-0">
-                                            <CardTitle className="text-lg font-medium text-muted-foreground">
-                                                {review.name}
-                                            </CardTitle>
-                                            <CardDescription>
-                                                {review.username}
-                                            </CardDescription>
-                                        </CardHeader>
-                                        <CardContent className="space-y-4 pb-4">
-                                            <p className="text-muted-foreground">
-                                                {review.review}
-                                            </p>
-                                        </CardContent>
-                                        <CardFooter className="w-full space-x-1 mt-auto">
-                                            {Array.from({ length: review.rating }, (_, i) => (
-                                                <StarIcon key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                                            ))}
-                                        </CardFooter>
-                                    </Card>
-                                </MagicCard>
-                            </AnimationContainer>
-                        ))}
-                    </div>
-                </div>
-            </MaxWidthWrapper>
-
+            
             {/* CTA Section */}
             <MaxWidthWrapper className="mt-20 max-w-[100vw] overflow-x-hidden scrollbar-hide">
                 <AnimationContainer delay={0.1}>
                     <LampContainer>
                         <div className="flex flex-col items-center justify-center relative w-full text-center">
                             <h2 className="bg-gradient-to-b from-neutral-200 to-neutral-400 py-4 bg-clip-text text-center text-4xl md:text-7xl !leading-[1.15] font-medium font-heading tracking-tight text-transparent mt-8">
-                                Step into the future of link management
+                                Ready to record and clip?
                             </h2>
                             <p className="text-muted-foreground mt-6 max-w-md mx-auto">
-                                Experience the cutting-edge solution that transforms how you handle your links. Elevate your online presence with our next-gen platform.
+                                Download GamePlay for Windows. Full session captures, generated highlight reels, and local storage—no cloud required.
                             </p>
-                            <div className="mt-6">
-                                <Button>
-                                    Get started for free
-                                    <ArrowRightIcon className="w-4 h-4 ml-2" />
+                            <div className="mt-6 flex flex-col items-center gap-2">
+                                <Button asChild>
+                                    <Link href="/dashboard">
+                                        Download for Windows
+                                        <ArrowRightIcon className="w-4 h-4 ml-2" />
+                                    </Link>
                                 </Button>
+                                <p className="text-xs text-muted-foreground/80">Lightweight • Native • Your data stays local</p>
                             </div>
                         </div>
                     </LampContainer>

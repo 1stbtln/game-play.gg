@@ -33,6 +33,13 @@
     --ring: 0 0% 83.1%;
 
     --radius: 0.5rem;
+
+    /* Glow accent colors */
+    --glow-primary: rgba(96, 165, 250, 0.35);
+    --glow-secondary: rgba(52, 211, 153, 0.35);
+    /* Animated beams / strong accents (matches hero gradient) */
+    --beam-from: rgba(96, 165, 250, 0.92);
+    --beam-to: rgba(52, 211, 153, 0.92);
   }
 
   .dark {
@@ -69,11 +76,16 @@
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
+
+    --glow-primary: rgba(96, 165, 250, 0.28);
+    --glow-secondary: rgba(52, 211, 153, 0.28);
+    --beam-from: rgba(37, 99, 235, 0.85);
+    --beam-to: rgba(5, 150, 105, 0.85);
   }
 }
 
 ::selection {
-  background-color: rgba(168, 85, 247, 0.2);
+  background-color: rgba(96, 165, 250, 0.18);
   color: hsl(var(--foreground));
 }
 
@@ -102,9 +114,11 @@ html, body {
 }
 
 .gradient {
-  background: conic-gradient(from 230.29deg at 51.63% 52.16%, rgb(36, 0, 255) 0deg, rgb(0, 135, 255) 67.5deg, rgb(108, 39, 157) 198.75deg, rgb(24, 38, 163) 251.25deg, rgb(54, 103, 196) 301.88deg, rgb(105, 30, 255) 360deg);
+  background:
+    radial-gradient(circle at top, var(--glow-primary), transparent 60%),
+    radial-gradient(circle at bottom, var(--glow-secondary), transparent 60%);
 }
 
 .not-found {
-  box-shadow: rgba(150, 18, 226, 0.3) 5px 5px;
+  box-shadow: rgba(96, 165, 250, 0.3) 5px 5px;
 }

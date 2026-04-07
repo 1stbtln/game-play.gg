@@ -1,6 +1,5 @@
 "use client";
 
-import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -17,6 +16,14 @@ const PricingCards = () => {
     const MotionTabTrigger = motion(TabsTrigger);
 
     const [activeTab, setActiveTab] = useState<Tab>("monthly");
+
+    const planCtaHref = (planName: string) => {
+        const interval = activeTab === "monthly" ? "monthly" : "yearly";
+        if (planName === "Free") return "/dashboard";
+        if (planName === "Pro") return `/api/stripe/checkout?plan=pro&interval=${interval}`;
+        if (planName === "Team") return `/api/stripe/checkout?plan=team&interval=${interval}`;
+        return "/dashboard";
+    };
 
     return (
         <Tabs defaultValue="monthly" className="w-full flex flex-col items-center justify-center">
@@ -66,13 +73,13 @@ const PricingCards = () => {
                     <Card
                         key={plan.name}
                         className={cn(
-                            "flex flex-col w-full border-border rounded-xl",
-                            plan.name === "Pro" && "border-2 border-purple-500"
+                            "flex flex-col w-full border-border rounded-2xl overflow-hidden",
+                            plan.name === "Pro" && "border border-[rgba(96,165,250,0.25)]"
                         )}
                     >
                         <CardHeader className={cn(
-                            "border-b border-border",
-                            plan.name === "Pro" ? "bg-purple-500/[0.07]" : "bg-foreground/[0.03]"
+                            "border-b border-border rounded-t-2xl",
+                            plan.name === "Pro" ? "bg-[rgba(96,165,250,0.12)]" : "bg-foreground/[0.03]"
                         )}>
                             <CardTitle className={cn(plan.name !== "Pro" && "text-muted-foreground", "text-lg font-medium")}>
                                 {plan.name}
@@ -90,7 +97,7 @@ const PricingCards = () => {
                         <CardContent className="pt-6 space-y-4">
                             {plan.features.map((feature, index) => (
                                 <div key={index} className="flex items-center gap-2">
-                                    <CheckCircleIcon className="text-purple-500 w-4 h-4" />
+                                    <CheckCircleIcon className="text-[rgba(96,165,250,0.9)] w-4 h-4" />
                                     <TooltipProvider>
                                         <Tooltip delayDuration={0}>
                                             <TooltipTrigger asChild>
@@ -108,11 +115,15 @@ const PricingCards = () => {
                                 </div>
                             ))}
                         </CardContent>
-                        <CardFooter className="w-full mt-auto">
+                        <CardFooter className="w-full mt-auto pt-6">
                             <Link
-                                href={plan.btn.href}
-                                style={{ width: "100%" }}
-                                className={buttonVariants({ className: plan.name === "Pro" && "bg-purple-500 hover:bg-purple-500/80 text-white" })}
+                                href={planCtaHref(plan.name)}
+                                className={cn(
+                                    "w-full rounded-xl py-2.5 text-center text-sm font-medium transition-colors",
+                                    plan.name === "Pro"
+                                        ? "border border-[rgba(96,165,250,0.4)] bg-transparent text-sky-300 hover:bg-[rgba(96,165,250,0.12)]"
+                                        : "border border-border bg-transparent text-foreground hover:bg-foreground/[0.05]"
+                                )}
                             >
                                 {plan.btn.text}
                             </Link>
@@ -125,13 +136,13 @@ const PricingCards = () => {
                     <Card
                         key={plan.name}
                         className={cn(
-                            "flex flex-col w-full border-border rounded-xl",
-                            plan.name === "Pro" && "border-2 border-purple-500"
+                            "flex flex-col w-full border-border rounded-2xl overflow-hidden",
+                            plan.name === "Pro" && "border border-[rgba(96,165,250,0.25)]"
                         )}
                     >
                         <CardHeader className={cn(
-                            "border-b border-border",
-                            plan.name === "Pro" ? "bg-purple-500/[0.07]" : "bg-foreground/[0.03]"
+                            "border-b border-border rounded-t-2xl",
+                            plan.name === "Pro" ? "bg-[rgba(96,165,250,0.12)]" : "bg-foreground/[0.03]"
                         )}>
                             <CardTitle className={cn(plan.name !== "Pro" && "text-muted-foreground", "text-lg font-medium")}>
                                 {plan.name}
@@ -150,7 +161,7 @@ const PricingCards = () => {
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: 10 }}
                                         transition={{ duration: 0.3, type: "spring", bounce: 0.25 }}
-                                        className="px-2 py-0.5 ml-2 rounded-md bg-purple-500 text-foreground text-sm font-medium"
+                                        className="px-2 py-0.5 ml-2 rounded-md bg-[rgba(96,165,250,0.18)] text-sky-300 border border-[rgba(96,165,250,0.5)] text-sm font-medium"
                                     >
                                         -12%
                                     </motion.span>
@@ -160,7 +171,7 @@ const PricingCards = () => {
                         <CardContent className="pt-6 space-y-4">
                             {plan.features.map((feature, index) => (
                                 <div key={index} className="flex items-center gap-2">
-                                    <CheckCircleIcon className="text-purple-500 w-4 h-4" />
+                                    <CheckCircleIcon className="text-[rgba(96,165,250,0.9)] w-4 h-4" />
                                     <TooltipProvider>
                                         <Tooltip delayDuration={0}>
                                             <TooltipTrigger asChild>
@@ -178,11 +189,15 @@ const PricingCards = () => {
                                 </div>
                             ))}
                         </CardContent>
-                        <CardFooter className="w-full pt- mt-auto">
+                        <CardFooter className="w-full pt-6 mt-auto">
                             <Link
-                                href={plan.btn.href}
-                                style={{ width: "100%" }}
-                                className={buttonVariants({ className: plan.name === "Pro" && "bg-purple-500 hover:bg-purple-500/80 text-white" })}
+                                href={planCtaHref(plan.name)}
+                                className={cn(
+                                    "w-full rounded-xl py-2.5 text-center text-sm font-medium transition-colors",
+                                    plan.name === "Pro"
+                                        ? "border border-[rgba(96,165,250,0.4)] bg-transparent text-sky-300 hover:bg-[rgba(96,165,250,0.12)]"
+                                        : "border border-border bg-transparent text-foreground hover:bg-foreground/[0.05]"
+                                )}
                             >
                                 {plan.btn.text}
                             </Link>

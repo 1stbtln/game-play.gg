@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { AnimationContainer, Icons } from "@/components"
+import { AnimationContainer } from "@/components"
+import Logo from "@/components/ui/logo";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect"
 
 const Footer = () => {
@@ -13,13 +14,13 @@ const Footer = () => {
                 <AnimationContainer delay={0.1}>
                     <div className="flex flex-col items-start justify-start md:max-w-[200px]">
                         <div className="flex items-start">
-                            <Icons.logo className="w-7 h-7" />
+                            <Logo className="h-7 w-7" />
                         </div>
                         <p className="text-muted-foreground mt-4 text-sm text-start">
-                            Manage your links with ease.
+                            Full session captures. Generated highlight reels. Local storage—no cloud required.
                         </p>
-                        <span className="mt-4 text-neutral-200 text-sm flex items-center">
-                            Made by <Link href="https://shreyas-sihasane.vercel.app/" className="font-semibold ml-1">Shreyas</Link>
+                        <span className="mt-4 text-neutral-200 text-sm">
+                            GamePlay • Windows desktop app
                         </span>
                     </div>
                 </AnimationContainer>
@@ -137,13 +138,13 @@ const Footer = () => {
             <div className="mt-8 border-t border-border/40 pt-4 md:pt-8 md:flex md:items-center md:justify-between w-full">
                 <AnimationContainer delay={0.6}>
                     <p className="text-sm text-muted-foreground mt-8 md:mt-0">
-                        &copy; {new Date().getFullYear()} Linkify INC. All rights reserved.
+                        &copy; {new Date().getFullYear()} GamePlay. All rights reserved.
                     </p>
                 </AnimationContainer>
             </div>
 
-            <div className="h-[20rem] lg:h-[20rem] hidden md:flex items-center justify-center">
-                <TextHoverEffect text="LINKIFY" />
+            <div className="h-[12rem] lg:h-[14rem] hidden md:flex items-center justify-center overflow-visible w-full max-w-2xl mx-auto px-4">
+                <TextHoverEffect text="GamePlay" size="lg" />
             </div>
         </footer>
     )

@@ -54,14 +54,21 @@ const MagicCard = ({ children, className }: Props) => {
                 className
             )}
         >
+            {/* Border-only glow: mask keeps radial gradient in a thin ring (not the card interior). */}
             <div
-                className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
+                className="pointer-events-none absolute inset-0 z-0 rounded-xl opacity-0 transition-opacity duration-300 box-border"
                 style={{
                     opacity,
-                    background: `radial-gradient(500px circle at ${position.x}px ${position.y}px, rgba(168,85,247,.15), transparent 60%)`,
+                    padding: 2,
+                    background: `radial-gradient(420px circle at ${position.x}px ${position.y}px, var(--glow-primary), var(--glow-secondary) 42%, transparent 72%)`,
+                    WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    maskComposite: "exclude",
                 }}
+                aria-hidden
             />
-            {children}
+            <div className="relative z-10 min-h-0 w-full">{children}</div>
         </div>
     );
 };

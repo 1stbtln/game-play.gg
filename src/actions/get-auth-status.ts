@@ -1,37 +1,60 @@
 "use server";
 
-import { db } from "@/lib";
-import { currentUser } from "@clerk/nextjs/server";
+import { createClient } from "@/lib/supabase/server";
 
-const getAuthStatus = async () => {
-    const user = await currentUser();
+export type AuthUserPayload = {
+    user: {
+        id: string;
+        email?: string;
+    } | null;
+    profile: {
+        full_name: string | null;
+        stripe_customer_id: string | null;
+    } | null;
+    subscription: {
+        status: string;
+        current_period_end: string | null;
+    } | null;
+};
 
-    if (!user?.id || !user?.primaryEmailAddress?.emailAddress) {
-        return { error: "User not found" };
+const getAuthStatus = async (): Promise<AuthUserPayload | { error: string }> => {
+    try {
+        const supabase = createClient();
+        const {
+            data: { user },
+            error: userError,
+        } = await supabase.auth.getUser();
+
+        if (userError || !user) {
+            return {
+                user: null,
+                profile: null,
+                subscription: null,
+            };
+        }
+
+        const { data: profile } = await supabase
+            .from("profiles")
+            .select("full_name, stripe_customer_id")
+            .eq("id", user.id)
+            .maybeSingle();
+
+        const { data: subscription } = await supabase
+            .from("subscriptions")
+            .select("status, current_period_end")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false })
+            .limit(1)
+            .maybeSingle();
+
+        return {
+            user: { id: user.id, email: user.email ?? undefined },
+            profile: profile ?? null,
+            subscription: subscription ?? null,
+        };
+    } catch {
+        return { error: "Auth is not configured. Set Supabase env vars." };
     }
-
-    let clerkId = user.id;
-
-    const existingUser = await db.user.findFirst({
-        where: {
-            clerkId,
-        },
-    });
-
-    console.log("existingUser", existingUser);
-
-    if (!existingUser) {
-        await db.user.create({
-            data: {
-                clerkId,
-                email: user.primaryEmailAddress.emailAddress,
-                name: user.fullName || user.firstName,
-                image: user.imageUrl,
-            },
-        });
-    }
-
-    return { success: true };
 };
 
 export default getAuthStatus;
