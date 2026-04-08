@@ -9,6 +9,7 @@ type Props = {
 
 const SignInPage = ({ searchParams }: Props) => {
     const authError = typeof searchParams.error === "string" ? searchParams.error : null;
+    const notice = typeof searchParams.notice === "string" ? searchParams.notice : null;
 
     return (
         <div className="flex flex-col items-start max-w-sm mx-auto h-dvh overflow-hidden pt-4 md:pt-20">
@@ -24,6 +25,12 @@ const SignInPage = ({ searchParams }: Props) => {
             {authError === "auth" ? (
                 <p className="text-sm text-destructive mt-4" role="alert">
                     Sign-in link expired or is invalid. Try again or request a new email.
+                </p>
+            ) : null}
+
+            {notice === "check_email" ? (
+                <p className="text-sm text-muted-foreground mt-4" role="status">
+                    Account created. Open the confirmation link we emailed you, then sign in below.
                 </p>
             ) : null}
 

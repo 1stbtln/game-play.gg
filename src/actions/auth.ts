@@ -47,7 +47,7 @@ export async function signUpWithPassword(_prev: AuthFormState, formData: FormDat
 
     const supabase = createClient();
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "http://localhost:3000";
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -60,10 +60,14 @@ export async function signUpWithPassword(_prev: AuthFormState, formData: FormDat
     }
 
     revalidatePath("/", "layout");
-    return {
-        success: true,
-        message: "Check your email for a confirmation link, then sign in.",
-    };
+
+    // Email confirmation off: Supabase returns a session; send user into the app.
+    if (data.session) {
+        redirect("/dashboard");
+    }
+
+    // Email confirmation on: no session yet; land on sign-in with guidance after they confirm.
+    redirect("/auth/sign-in?notice=check_email");
 }
 
 export async function signOut() {

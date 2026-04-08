@@ -36,11 +36,6 @@ const SignUpForm = () => {
                     {state.error}
                 </p>
             ) : null}
-            {state?.success && state.message ? (
-                <p className="text-sm text-muted-foreground w-full" role="status">
-                    {state.message}
-                </p>
-            ) : null}
 
             <form action={formAction} className="flex flex-col gap-4 w-full max-w-sm">
                 <div className="space-y-2">
