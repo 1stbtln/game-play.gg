@@ -1,6 +1,6 @@
 "use client";
 
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn, NAV_LINKS } from "@/utils";
 import { LucideIcon, ZapIcon } from "lucide-react";
+import { openBillingPortal } from "@/actions/billing";
+import { signOut } from "@/actions/auth";
 import Link from "next/link";
 import React, { useEffect, useState } from 'react';
 import Logo from "@/components/ui/logo";
@@ -112,12 +114,16 @@ const Navbar = ({ isAuthenticated = false }: { isAuthenticated?: boolean }) => {
                     <div className="hidden lg:flex items-center gap-x-4">
                         {isAuthenticated ? (
                             <>
-                                <Link href="/api/stripe/portal" className={buttonVariants({ size: "sm", variant: "outline" })}>
-                                    Manage billing
-                                </Link>
-                                <Link href="/auth/sign-out" className={buttonVariants({ size: "sm", variant: "ghost" })}>
-                                    Sign out
-                                </Link>
+                                <form action={openBillingPortal}>
+                                    <Button size="sm" variant="outline" type="submit">
+                                        Manage billing
+                                    </Button>
+                                </form>
+                                <form action={signOut}>
+                                    <Button size="sm" variant="ghost" type="submit">
+                                        Sign out
+                                    </Button>
+                                </form>
                             </>
                         ) : (
                             <>

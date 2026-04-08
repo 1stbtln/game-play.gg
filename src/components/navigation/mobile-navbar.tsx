@@ -1,5 +1,7 @@
 "use client";
 
+import { openBillingPortal } from "@/actions/billing";
+import { signOut } from "@/actions/auth";
 import {
     Accordion,
     AccordionContent,
@@ -43,12 +45,16 @@ const MobileNavbar = ({ isAuthenticated = false }: { isAuthenticated?: boolean }
                         <div className="flex items-center justify-evenly w-full space-x-2">
                             {isAuthenticated ? (
                                 <>
-                                    <Link href="/api/stripe/portal" className={buttonVariants({ variant: "outline", className: "w-full" })}>
-                                        Manage billing
-                                    </Link>
-                                    <Link href="/auth/sign-out" className={buttonVariants({ variant: "outline", className: "w-full" })}>
-                                        Sign Out
-                                    </Link>
+                                    <form action={openBillingPortal} className="w-full">
+                                        <Button type="submit" variant="outline" className="w-full">
+                                            Manage billing
+                                        </Button>
+                                    </form>
+                                    <form action={signOut} className="w-full">
+                                        <Button type="submit" variant="outline" className="w-full">
+                                            Sign Out
+                                        </Button>
+                                    </form>
                                 </>
                             ) : (
                                 <>

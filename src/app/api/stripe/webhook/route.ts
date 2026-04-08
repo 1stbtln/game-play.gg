@@ -42,6 +42,13 @@ async function upsertSubscriptionFromStripe(sub: Stripe.Subscription) {
     );
 }
 
+async function upsertSubscriptionFromId(subscriptionId: string) {
+    const stripe = getStripe();
+    if (!stripe) return;
+    const sub = await stripe.subscriptions.retrieve(subscriptionId);
+    await upsertSubscriptionFromStripe(sub);
+}
+
 export async function POST(request: Request) {
     const stripe = getStripe();
     const secret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -74,6 +81,13 @@ export async function POST(request: Request) {
                     typeof session.customer === "string" ? session.customer : session.customer?.id;
                 if (userId && customerId) {
                     await admin.from("profiles").update({ stripe_customer_id: customerId }).eq("id", userId);
+                }
+                const subscriptionId =
+                    typeof session.subscription === "string"
+                        ? session.subscription
+                        : session.subscription?.id;
+                if (subscriptionId) {
+                    await upsertSubscriptionFromId(subscriptionId);
                 }
                 break;
             }
