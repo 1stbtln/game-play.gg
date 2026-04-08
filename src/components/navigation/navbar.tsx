@@ -19,7 +19,7 @@ import MaxWidthWrapper from "../global/max-width-wrapper";
 import MobileNavbar from "./mobile-navbar";
 import AnimationContainer from "../global/animation-container";
 
-const Navbar = () => {
+const Navbar = ({ isAuthenticated = false }: { isAuthenticated?: boolean }) => {
     const [scroll, setScroll] = useState(false);
 
     const handleScroll = () => {
@@ -110,19 +110,29 @@ const Navbar = () => {
                     </div>
 
                     <div className="hidden lg:flex items-center gap-x-4">
-                        <Link href="/dashboard" className={buttonVariants({ size: "sm", variant: "outline" })}>
-                            Dashboard
-                        </Link>
-                        <Link href="/auth/sign-in" className={buttonVariants({ size: "sm", variant: "ghost" })}>
-                            Sign In
-                        </Link>
-                        <Link href="/auth/sign-up" className={buttonVariants({ size: "sm", })}>
-                            Get Started
-                            <ZapIcon className="size-3.5 ml-1.5 text-orange-500 fill-orange-500" />
-                        </Link>
+                        {isAuthenticated ? (
+                            <>
+                                <Link href="/api/stripe/portal" className={buttonVariants({ size: "sm", variant: "outline" })}>
+                                    Manage billing
+                                </Link>
+                                <Link href="/auth/sign-out" className={buttonVariants({ size: "sm", variant: "ghost" })}>
+                                    Sign out
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link href="/auth/sign-in" className={buttonVariants({ size: "sm", variant: "ghost" })}>
+                                    Sign In
+                                </Link>
+                                <Link href="/auth/sign-up" className={buttonVariants({ size: "sm", })}>
+                                    Get Started
+                                    <ZapIcon className="size-3.5 ml-1.5 text-orange-500 fill-orange-500" />
+                                </Link>
+                            </>
+                        )}
                     </div>
 
-                    <MobileNavbar />
+                    <MobileNavbar isAuthenticated={isAuthenticated} />
 
                 </MaxWidthWrapper>
             </AnimationContainer>

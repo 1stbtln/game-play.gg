@@ -6,6 +6,17 @@ import { redirect } from "next/navigation";
 
 export type AuthFormState = { error?: string; success?: boolean; message?: string } | null;
 
+function normalizeAuthError(message: string) {
+    const lower = message.toLowerCase();
+    if (lower.includes("user already registered")) {
+        return "This email already has an account. Try signing in instead, or use password reset if needed.";
+    }
+    if (lower.includes("invalid login credentials")) {
+        return "Invalid email or password.";
+    }
+    return message;
+}
+
 export async function signInWithPassword(_prev: AuthFormState, formData: FormData): Promise<AuthFormState> {
     const email = String(formData.get("email") ?? "").trim();
     const password = String(formData.get("password") ?? "");
@@ -16,7 +27,7 @@ export async function signInWithPassword(_prev: AuthFormState, formData: FormDat
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
-        return { error: error.message };
+        return { error: normalizeAuthError(error.message) };
     }
 
     revalidatePath("/", "layout");
@@ -45,7 +56,7 @@ export async function signUpWithPassword(_prev: AuthFormState, formData: FormDat
         },
     });
     if (error) {
-        return { error: error.message };
+        return { error: normalizeAuthError(error.message) };
     }
 
     revalidatePath("/", "layout");

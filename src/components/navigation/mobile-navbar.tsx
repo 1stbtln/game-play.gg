@@ -18,7 +18,7 @@ import { LucideIcon, Menu, X } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from 'react';
 
-const MobileNavbar = () => {
+const MobileNavbar = ({ isAuthenticated = false }: { isAuthenticated?: boolean }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const handleClose = () => {
@@ -41,15 +41,25 @@ const MobileNavbar = () => {
                     </SheetClose>
                     <div className="flex flex-col items-start w-full py-2 mt-10">
                         <div className="flex items-center justify-evenly w-full space-x-2">
-                            <Link href="/dashboard" className={buttonVariants({ variant: "outline", className: "w-full" })}>
-                                Dashboard
-                            </Link>
-                            <Link href="/auth/sign-in" className={buttonVariants({ variant: "outline", className: "w-full" })}>
-                                Sign In
-                            </Link>
-                            <Link href="/auth/sign-up" className={buttonVariants({ className: "w-full" })}>
-                                Sign Up
-                            </Link>
+                            {isAuthenticated ? (
+                                <>
+                                    <Link href="/api/stripe/portal" className={buttonVariants({ variant: "outline", className: "w-full" })}>
+                                        Manage billing
+                                    </Link>
+                                    <Link href="/auth/sign-out" className={buttonVariants({ variant: "outline", className: "w-full" })}>
+                                        Sign Out
+                                    </Link>
+                                </>
+                            ) : (
+                                <>
+                                    <Link href="/auth/sign-in" className={buttonVariants({ variant: "outline", className: "w-full" })}>
+                                        Sign In
+                                    </Link>
+                                    <Link href="/auth/sign-up" className={buttonVariants({ className: "w-full" })}>
+                                        Sign Up
+                                    </Link>
+                                </>
+                            )}
                         </div>
                         <ul className="flex flex-col items-start w-full mt-6">
                             <Accordion type="single" collapsible className="!w-full">

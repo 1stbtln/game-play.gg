@@ -8,12 +8,19 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { LampContainer } from "@/components/ui/lamp";
 import MagicBadge from "@/components/ui/magic-badge";
 import MagicCard from "@/components/ui/magic-card";
+import { createClient } from "@/lib/supabase/server";
 import { REVIEWS } from "@/utils/constants/misc";
 import { ArrowRightIcon, CreditCardIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const HomePage = async () => {
+    const supabase = createClient();
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+    const isAuthenticated = !!user;
+
     return (
         <div className="overflow-x-hidden scrollbar-hide size-full">
             {/* Hero Section */}
@@ -43,8 +50,8 @@ const HomePage = async () => {
                         </p>
                         <div className="flex flex-col items-center gap-3 z-50">
                             <Button asChild>
-                                <Link href="/dashboard" className="flex items-center">
-                                    Try it for free
+                                <Link href={isAuthenticated ? "/pricing" : "/auth/sign-up"} className="flex items-center">
+                                    {isAuthenticated ? "View plans" : "Try it for free"}
                                     <ArrowRightIcon className="w-4 h-4 ml-2" />
                                 </Link>
                             </Button>
@@ -238,8 +245,8 @@ const HomePage = async () => {
                             </p>
                             <div className="mt-6 flex flex-col items-center gap-2">
                                 <Button asChild>
-                                    <Link href="/dashboard">
-                                        Download for Windows
+                                    <Link href={isAuthenticated ? "/api/stripe/portal" : "/auth/sign-up"}>
+                                        {isAuthenticated ? "Manage billing" : "Download for Windows"}
                                         <ArrowRightIcon className="w-4 h-4 ml-2" />
                                     </Link>
                                 </Button>

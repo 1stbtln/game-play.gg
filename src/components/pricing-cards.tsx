@@ -7,21 +7,80 @@ import { cn, PLANS } from "@/utils";
 import { motion } from "framer-motion";
 import { CheckCircleIcon } from "lucide-react";
 import Link from "next/link";
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from "react";
 
 type Tab = "monthly" | "yearly";
+type StripePricesResponse = {
+    pro?: {
+        monthly?: { unit_amount: number | null; currency: string };
+        yearly?: { unit_amount: number | null; currency: string };
+    };
+};
 
 const PricingCards = () => {
 
     const MotionTabTrigger = motion(TabsTrigger);
 
     const [activeTab, setActiveTab] = useState<Tab>("monthly");
+    const [stripePrices, setStripePrices] = useState<StripePricesResponse | null>(null);
 
     const planCtaHref = (planName: string) => {
         const interval = activeTab === "monthly" ? "monthly" : "yearly";
-        if (planName === "Free") return "/dashboard";
+        if (planName === "Free") return "/auth/sign-up";
         if (planName === "Pro") return `/api/stripe/checkout?plan=pro&interval=${interval}`;
-        return "/dashboard";
+        return "/pricing";
+    };
+
+    useEffect(() => {
+        let mounted = true;
+        fetch("/api/stripe/prices")
+            .then(async (res) => {
+                if (!res.ok) return null;
+                return (await res.json()) as StripePricesResponse;
+            })
+            .then((data) => {
+                if (mounted && data) setStripePrices(data);
+            })
+            .catch(() => {
+                // Fallback to local defaults in PLANS if API is unavailable.
+            });
+        return () => {
+            mounted = false;
+        };
+    }, []);
+
+    const proMonthly = useMemo(() => {
+        const cents = stripePrices?.pro?.monthly?.unit_amount;
+        return typeof cents === "number" ? cents / 100 : null;
+    }, [stripePrices]);
+
+    const proYearly = useMemo(() => {
+        const cents = stripePrices?.pro?.yearly?.unit_amount;
+        return typeof cents === "number" ? cents / 100 : null;
+    }, [stripePrices]);
+
+    const getMonthlyPrice = (planName: string, fallback: number) => {
+        if (planName !== "Pro") return fallback;
+        return proMonthly ?? fallback;
+    };
+
+    const getYearlyPrice = (planName: string, fallback: number) => {
+        if (planName !== "Pro") return fallback;
+        return proYearly ?? fallback;
+    };
+
+    const getDiscountPct = (planName: string, fallbackMonthly: number, fallbackYearly: number) => {
+        if (planName !== "Pro") return 0;
+        const monthly = getMonthlyPrice(planName, fallbackMonthly);
+        const yearly = getYearlyPrice(planName, fallbackYearly);
+        if (!monthly || !yearly) return 0;
+        const fullYear = monthly * 12;
+        if (fullYear <= 0 || yearly >= fullYear) return 0;
+        return Math.round(((fullYear - yearly) / fullYear) * 100);
+    };
+
+    const formatPrice = (value: number) => {
+        return Number.isInteger(value) ? String(value) : value.toFixed(2);
     };
 
     return (
@@ -67,12 +126,12 @@ const PricingCards = () => {
                 </MotionTabTrigger>
             </TabsList>
 
-            <TabsContent value="monthly" className="grid grid-cols-1 lg:grid-cols-2 gap-5 w-full md:gap-8 flex-wrap max-w-5xl mx-auto pt-6">
+            <TabsContent value="monthly" className="grid grid-cols-1 lg:grid-cols-2 gap-5 w-full md:gap-8 flex-wrap max-w-4xl mx-auto pt-6">
                 {PLANS.map((plan) => (
                     <Card
                         key={plan.name}
                         className={cn(
-                            "flex flex-col w-full border-border rounded-2xl overflow-hidden",
+                            "flex flex-col w-full max-w-[26rem] justify-self-center border-border rounded-2xl overflow-hidden",
                             plan.name === "Pro" && "border border-[rgba(96,165,250,0.25)]"
                         )}
                     >
@@ -87,7 +146,7 @@ const PricingCards = () => {
                                 {plan.info}
                             </CardDescription>
                             <h5 className="text-3xl font-semibold">
-                                ${plan.price.monthly}
+                                ${formatPrice(getMonthlyPrice(plan.name, plan.price.monthly))}
                                 <span className="text-base text-muted-foreground font-normal">
                                     {plan.name !== "Free" ? "/month" : ""}
                                 </span>
@@ -130,12 +189,12 @@ const PricingCards = () => {
                     </Card>
                 ))}
             </TabsContent>
-            <TabsContent value="yearly" className="grid grid-cols-1 lg:grid-cols-2 gap-5 w-full md:gap-8 flex-wrap max-w-5xl mx-auto pt-6">
+            <TabsContent value="yearly" className="grid grid-cols-1 lg:grid-cols-2 gap-5 w-full md:gap-8 flex-wrap max-w-4xl mx-auto pt-6">
                 {PLANS.map((plan) => (
                     <Card
                         key={plan.name}
                         className={cn(
-                            "flex flex-col w-full border-border rounded-2xl overflow-hidden",
+                            "flex flex-col w-full max-w-[26rem] justify-self-center border-border rounded-2xl overflow-hidden",
                             plan.name === "Pro" && "border border-[rgba(96,165,250,0.25)]"
                         )}
                     >
@@ -150,11 +209,11 @@ const PricingCards = () => {
                                 {plan.info}
                             </CardDescription>
                             <h5 className="text-3xl font-semibold flex items-end">
-                                ${plan.price.yearly}
+                                ${formatPrice(getYearlyPrice(plan.name, plan.price.yearly))}
                                 <div className="text-base text-muted-foreground font-normal">
                                     {plan.name !== "Free" ? "/year" : ""}
                                 </div>
-                                {plan.name !== "Free" && (
+                                {plan.name !== "Free" && getDiscountPct(plan.name, plan.price.monthly, plan.price.yearly) > 0 && (
                                     <motion.span
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
@@ -162,7 +221,7 @@ const PricingCards = () => {
                                         transition={{ duration: 0.3, type: "spring", bounce: 0.25 }}
                                         className="px-2 py-0.5 ml-2 rounded-md bg-[rgba(96,165,250,0.18)] text-sky-300 border border-[rgba(96,165,250,0.5)] text-sm font-medium"
                                     >
-                                        -12%
+                                        -{getDiscountPct(plan.name, plan.price.monthly, plan.price.yearly)}%
                                     </motion.span>
                                 )}
                             </h5>
