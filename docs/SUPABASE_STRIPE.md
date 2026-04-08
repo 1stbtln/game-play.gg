@@ -16,12 +16,16 @@ Copy `.env.example` to `.env.local` and fill:
 - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Project Settings → API).
 - `SUPABASE_SERVICE_ROLE_KEY` (server only; never expose to the client).
 - `NEXT_PUBLIC_SITE_URL` (no trailing slash).
-- Stripe keys and **Price IDs** for Pro/Team monthly/yearly.
+- Stripe keys and **Price IDs** for Pro monthly/yearly.
 
 ## 3. Stripe
 
-1. Create **Products** with recurring prices for Pro and Team (monthly + yearly).
-2. Copy each **Price ID** (`price_...`) into `STRIPE_PRICE_*` env vars.
+1. Create one Stripe product for **Pro** with two recurring prices:
+   - Pro Monthly
+   - Pro Yearly
+2. Copy both **Price IDs** (`price_...`) into:
+   - `STRIPE_PRICE_PRO_MONTHLY`
+   - `STRIPE_PRICE_PRO_YEARLY`
 3. **Developers → Webhooks → Add endpoint**  
    URL: `https://your-domain.com/api/stripe/webhook`  
    Events (minimum):
@@ -37,7 +41,7 @@ Local testing: use [Stripe CLI](https://stripe.com/docs/stripe-cli) `stripe list
 
 - **Sign up / sign in**: `/auth/sign-up`, `/auth/sign-in` (email + password). Email confirmation uses `/auth/callback`.
 - **Dashboard**: `/dashboard` requires a Supabase session.
-- **Checkout**: Pricing “Get Pro” / Team buttons hit `/api/stripe/checkout?plan=…&interval=…` (must be signed in).
+- **Checkout**: Pricing “Get Pro” button hits `/api/stripe/checkout?plan=pro&interval=monthly|yearly` (must be signed in).
 - **Subscriptions**: Webhook upserts `public.subscriptions`; `profiles.stripe_customer_id` is set after checkout.
 
 ## 5. Trigger syntax (Postgres)

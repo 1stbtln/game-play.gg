@@ -23,7 +23,7 @@ export async function GET(request: Request) {
     const plan = searchParams.get("plan") as BillingPlan | null;
     const interval = searchParams.get("interval") as BillingInterval | null;
 
-    if (plan !== "pro" && plan !== "team") {
+    if (plan !== "pro") {
         return NextResponse.json({ error: "Invalid plan." }, { status: 400 });
     }
     if (interval !== "monthly" && interval !== "yearly") {

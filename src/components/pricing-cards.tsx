@@ -21,7 +21,6 @@ const PricingCards = () => {
         const interval = activeTab === "monthly" ? "monthly" : "yearly";
         if (planName === "Free") return "/dashboard";
         if (planName === "Pro") return `/api/stripe/checkout?plan=pro&interval=${interval}`;
-        if (planName === "Team") return `/api/stripe/checkout?plan=team&interval=${interval}`;
         return "/dashboard";
     };
 
@@ -68,7 +67,7 @@ const PricingCards = () => {
                 </MotionTabTrigger>
             </TabsList>
 
-            <TabsContent value="monthly" className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full md:gap-8 flex-wrap max-w-5xl mx-auto pt-6">
+            <TabsContent value="monthly" className="grid grid-cols-1 lg:grid-cols-2 gap-5 w-full md:gap-8 flex-wrap max-w-5xl mx-auto pt-6">
                 {PLANS.map((plan) => (
                     <Card
                         key={plan.name}
@@ -131,7 +130,7 @@ const PricingCards = () => {
                     </Card>
                 ))}
             </TabsContent>
-            <TabsContent value="yearly" className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full md:gap-8 flex-wrap max-w-5xl mx-auto pt-6">
+            <TabsContent value="yearly" className="grid grid-cols-1 lg:grid-cols-2 gap-5 w-full md:gap-8 flex-wrap max-w-5xl mx-auto pt-6">
                 {PLANS.map((plan) => (
                     <Card
                         key={plan.name}

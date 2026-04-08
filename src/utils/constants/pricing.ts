@@ -25,19 +25,6 @@ export const PLANS = [
         ],
         btn: { text: "Get Pro", href: "/dashboard", variant: "purple" },
     },
-    {
-        name: "Team",
-        info: "For orgs & studios",
-        price: { monthly: 49, yearly: Math.round(49 * 12 * (1 - 0.12)) },
-        features: [
-            { text: "Everything in Pro" },
-            { text: "Unlimited montages" },
-            { text: "Dedicated support", tooltip: "Direct line to our team" },
-            { text: "Custom keybinds & presets" },
-            { text: "Volume licensing", tooltip: "Deploy across your team" },
-        ],
-        btn: { text: "Contact us", href: "/dashboard", variant: "default" },
-    },
 ];
 
 export const PRICING_FEATURES = [
@@ -46,7 +33,7 @@ export const PRICING_FEATURES = [
     { text: "Auto montages", tooltip: "AI-generated highlight clips." },
     { text: "Custom keybinds", tooltip: "Start/stop your way." },
     { text: "Community support", tooltip: "Discord and docs." },
-    { text: "Priority support", tooltip: "Pro and Team plans." },
+    { text: "Priority support", tooltip: "Available on Pro." },
 ];
 
 export const WORKSPACE_LIMIT = 2;
