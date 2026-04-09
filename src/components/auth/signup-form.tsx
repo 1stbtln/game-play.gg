@@ -1,6 +1,7 @@
 "use client";
 
 import { signUpWithPassword, type AuthFormState } from "@/actions/auth";
+import { AuthOAuthButtons } from "@/components/auth/auth-oauth-buttons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,6 +37,8 @@ const SignUpForm = () => {
                     {state.error}
                 </p>
             ) : null}
+
+            <AuthOAuthButtons oauthFirst />
 
             <form action={formAction} className="flex flex-col gap-4 w-full max-w-sm">
                 <div className="space-y-2">

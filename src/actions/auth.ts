@@ -3,8 +3,15 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import type { Provider } from "@supabase/supabase-js";
 
 export type AuthFormState = { error?: string; success?: boolean; message?: string } | null;
+
+const OAUTH_PROVIDERS = ["google", "discord"] as const satisfies readonly Provider[];
+
+function isOAuthProvider(value: string): value is (typeof OAUTH_PROVIDERS)[number] {
+    return (OAUTH_PROVIDERS as readonly string[]).includes(value);
+}
 
 function normalizeAuthError(message: string) {
     const lower = message.toLowerCase();
@@ -15,6 +22,31 @@ function normalizeAuthError(message: string) {
         return "Invalid email or password.";
     }
     return message;
+}
+
+export async function signInWithOAuth(_prev: AuthFormState, formData: FormData): Promise<AuthFormState> {
+    const raw = String(formData.get("provider") ?? "");
+    if (!isOAuthProvider(raw)) {
+        return { error: "Unknown sign-in method." };
+    }
+
+    const supabase = createClient();
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "http://localhost:3000";
+    const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: raw,
+        options: {
+            redirectTo: `${siteUrl}/auth/callback`,
+        },
+    });
+
+    if (error) {
+        return { error: normalizeAuthError(error.message) };
+    }
+    if (!data.url) {
+        return { error: "Could not start sign-in. Try again." };
+    }
+
+    redirect(data.url);
 }
 
 export async function signInWithPassword(_prev: AuthFormState, formData: FormData): Promise<AuthFormState> {

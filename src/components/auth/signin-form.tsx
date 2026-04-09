@@ -1,6 +1,7 @@
 "use client";
 
 import { signInWithPassword, type AuthFormState } from "@/actions/auth";
+import { AuthOAuthButtons } from "@/components/auth/auth-oauth-buttons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -48,6 +49,8 @@ const SignInForm = () => {
                 </div>
                 <SubmitButton />
             </form>
+
+            <AuthOAuthButtons />
 
             <Button asChild variant="outline">
                 <Link href="/" className="flex items-center gap-2">
