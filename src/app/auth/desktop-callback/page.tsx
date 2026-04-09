@@ -26,10 +26,10 @@ export default function DesktopOAuthCallbackPage() {
     return (
         <div className="min-h-dvh w-full bg-background px-4 py-10 sm:px-6">
             <div className="mx-auto w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-sm">
-                <h1 className="text-lg font-semibold">{attempted ? "Return to the desktop app" : "Opening GamePlay desktop…"}</h1>
+                <h1 className="text-lg font-semibold">{attempted ? "You're all set" : "Opening GamePlay desktop…"}</h1>
                 <p className="mt-2 text-sm text-muted-foreground">
                     {attempted
-                        ? "If GamePlay opened and you’re signed in there, you can close this browser tab. If not, use the button below."
+                        ? "If GamePlay opened and you're signed in there, you can close this tab now. If not, use the button below to open the app again."
                         : "If the app did not open automatically, use the button below when it appears. When the desktop app shows you’re signed in, you can close this tab — it does not need to stay open."}
                 </p>
 
