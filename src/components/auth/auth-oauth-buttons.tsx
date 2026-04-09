@@ -36,14 +36,14 @@ export function AuthOAuthButtons({ oauthFirst = false }: Props) {
                     {state.error}
                 </p>
             ) : null}
-            <form action={formAction} className="flex flex-col gap-2 w-full max-w-sm">
+            <form action={formAction} className="flex w-full flex-col gap-2">
                 <OAuthSubmitRow />
             </form>
         </>
     );
 
     const divider = (
-        <div className="relative w-full max-w-sm">
+        <div className="relative w-full">
             <div className="absolute inset-0 flex items-center" aria-hidden>
                 <span className="w-full border-t border-border" />
             </div>

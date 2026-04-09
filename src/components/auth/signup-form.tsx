@@ -22,7 +22,7 @@ const SignUpForm = () => {
     const [state, formAction] = useFormState(signUpWithPassword, null as AuthFormState);
 
     return (
-        <div className="flex flex-col items-start gap-y-6 py-8 w-full px-0.5">
+        <div className="flex w-full flex-col items-start gap-y-5 py-6 md:gap-y-6 md:py-8">
             <h2 className="text-2xl font-semibold">Create an account</h2>
             <p className="text-muted-foreground text-sm">
                 Already have an account?{" "}
@@ -40,7 +40,7 @@ const SignUpForm = () => {
 
             <AuthOAuthButtons oauthFirst />
 
-            <form action={formAction} className="flex flex-col gap-4 w-full max-w-sm">
+            <form action={formAction} className="flex w-full flex-col gap-4">
                 <div className="space-y-2">
                     <Label htmlFor="fullName">Display name (optional)</Label>
                     <Input id="fullName" name="fullName" type="text" autoComplete="name" placeholder="Player One" />
@@ -64,7 +64,7 @@ const SignUpForm = () => {
                 <SubmitButton />
             </form>
 
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" className="w-full sm:w-auto">
                 <Link href="/" className="flex items-center gap-2">
                     <ArrowLeftIcon className="h-4 w-4" />
                     Back to home

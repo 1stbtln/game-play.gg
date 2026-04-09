@@ -22,7 +22,7 @@ const SignInForm = () => {
     const [state, formAction] = useFormState(signInWithPassword, null as AuthFormState);
 
     return (
-        <div className="flex flex-col items-start gap-y-6 py-8 w-full px-0.5">
+        <div className="flex w-full flex-col items-start gap-y-5 py-6 md:gap-y-6 md:py-8">
             <h2 className="text-2xl font-semibold">Sign in to GamePlay</h2>
             <p className="text-muted-foreground text-sm">
                 Use the email and password for your account. New here?{" "}
@@ -38,7 +38,7 @@ const SignInForm = () => {
                 </p>
             ) : null}
 
-            <form action={formAction} className="flex flex-col gap-4 w-full max-w-sm">
+            <form action={formAction} className="flex w-full flex-col gap-4">
                 <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
                     <Input id="email" name="email" type="email" autoComplete="email" required placeholder="you@example.com" />
@@ -52,7 +52,7 @@ const SignInForm = () => {
 
             <AuthOAuthButtons />
 
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" className="w-full sm:w-auto">
                 <Link href="/" className="flex items-center gap-2">
                     <ArrowLeftIcon className="h-4 w-4" />
                     Back to home
