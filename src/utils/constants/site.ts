@@ -1,7 +1,7 @@
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "GamePlay";
 
-/** Primary logo in `public/` (encode space for reliable URLs). */
-export const LOGO_URL = "/gameplay%20(2).png";
+/** Primary logo asset in `public/logo.png`. */
+export const LOGO_URL = "/logo.png";
 
 export const APP_DOMAIN = `https://${process.env.NEXT_PUBLIC_APP_DOMAIN}`;
 
