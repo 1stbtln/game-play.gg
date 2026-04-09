@@ -17,8 +17,8 @@
 </head>
 <body>
   <div class="card">
-    <h1>Opening GamePlay desktop…</h1>
-    <p>If the app does not open automatically, use the button below. You can close this tab after sign-in finishes in the desktop app.</p>
+    <h1 id="title">Opening GamePlay desktop…</h1>
+    <p id="desc">If the app does not open automatically, use the button below. When the desktop app shows you’re signed in, you can close this tab — it does not need to stay open.</p>
     <p id="wait">Waiting for handoff…</p>
     <a id="open" class="btn" href="#" style="display:none">Open GamePlay desktop</a>
     <p style="margin-top:1.25rem;font-size:0.75rem;color:rgba(250,250,250,0.55)">
@@ -32,13 +32,20 @@
       var target = "gameplay://auth/callback" + q + h;
       var a = document.getElementById("open");
       var w = document.getElementById("wait");
+      var title = document.getElementById("title");
+      var desc = document.getElementById("desc");
       if (a) a.setAttribute("href", target);
+      try {
+        history.replaceState(null, "", window.location.pathname);
+      } catch (e) {}
       try {
         window.location.replace(target);
       } catch (e) {}
       window.setTimeout(function () {
         if (w) w.style.display = "none";
         if (a) a.style.display = "inline-block";
+        if (title) title.textContent = "Return to the desktop app";
+        if (desc) desc.textContent = "If GamePlay opened and you’re signed in there, you can close this browser tab. If not, use the button above to open the app again.";
       }, 700);
     })();
   </script>

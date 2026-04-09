@@ -13,6 +13,11 @@ export default function DesktopOAuthCallbackPage() {
 
     useEffect(() => {
         if (typeof window === "undefined") return;
+        try {
+            history.replaceState(null, "", window.location.pathname);
+        } catch {
+            /* ignore */
+        }
         window.location.replace(deepLink);
         const timer = window.setTimeout(() => setAttempted(true), 900);
         return () => window.clearTimeout(timer);
@@ -21,10 +26,11 @@ export default function DesktopOAuthCallbackPage() {
     return (
         <div className="min-h-dvh w-full bg-background px-4 py-10 sm:px-6">
             <div className="mx-auto w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-sm">
-                <h1 className="text-lg font-semibold">Opening GamePlay desktop…</h1>
+                <h1 className="text-lg font-semibold">{attempted ? "Return to the desktop app" : "Opening GamePlay desktop…"}</h1>
                 <p className="mt-2 text-sm text-muted-foreground">
-                    If the app did not open automatically, click the button below. You can close this tab after sign-in
-                    completes in the desktop app.
+                    {attempted
+                        ? "If GamePlay opened and you’re signed in there, you can close this browser tab. If not, use the button below."
+                        : "If the app did not open automatically, use the button below when it appears. When the desktop app shows you’re signed in, you can close this tab — it does not need to stay open."}
                 </p>
 
                 {attempted ? (
